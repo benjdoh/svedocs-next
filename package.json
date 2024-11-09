@@ -4,7 +4,7 @@
   "description": "documentation for the rest of us",
   "type": "module",
   "scripts": {
-    "docs:dev": "jiti src/node/cli.js dev docs"
+    "docs:dev": "pnpx nodemon src/node/cli.js dev docs"
   },
   "keywords": [
     "svelte",
@@ -17,8 +17,12 @@
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
     "citty": "^0.1.6",
     "fast-glob": "^3.3.2",
+    "knitwork": "^1.1.0",
+    "mdsvex": "^0.12.3",
+    "pathe": "^1.1.2",
     "rou3": "^0.5.1",
     "svelte": "^5.1.9",
+    "ufo": "^1.5.4",
     "vite": "^5.4.10"
   },
   "devDependencies": {

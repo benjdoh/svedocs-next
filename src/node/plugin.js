@@ -1,7 +1,9 @@
 import { searchForWorkspaceRoot } from "vite";
 import { CLIENT_DIR, HTML_TEMPLATE, SOURCE_DIR } from "./constant.js";
 import { mergeConfig } from "vite";
-import { findRoute } from "rou3";
+import { findRoute, findAllRoutes } from "rou3";
+import { genImport } from "knitwork";
+import { join } from "pathe";
 
 /**
  *
@@ -27,21 +29,22 @@ export async function svedocs(config) {
       });
     },
     load(id, options) {
-      if (id === "$data")
-        return `
-      export const router = ${JSON.stringify(config.router)}
-      `;
+      if (id === "$data") {
+        return `export const router = ${JSON.stringify(config.router)}`;
+      }
     },
     resolveId(id) {
-      if (id === "$data") return id;
+      console.log("id:", id);
+      if (["$data"].includes(id)) return id;
+      if (id.startsWith("$src")) {
+        console.log(id);
+
+        return join(config.cwd, id.slice(4));
+      }
     },
     configureServer(server) {
       return () => {
         server.middlewares.use(async (req, res, next) => {
-          if (!findRoute(config.router, req.method, req.originalUrl)) {
-            return next();
-          }
-
           res.setHeader("content-type", "text/html");
 
           res.end(HTML_TEMPLATE);
